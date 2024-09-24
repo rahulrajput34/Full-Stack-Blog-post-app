@@ -1,0 +1,30 @@
+<!-- 
+ What we gonna learn in this lecture??
+ - first we created environment varibales in this project
+ - In this environment varibales we have unique ids and user password and all there are many ways to access this password and ids by just using JavaScript
+ - TO protect our data we make system varibale in .env file (we must create this inside the root means in src like index.html and README.md)
+ - Secondly we have creared .env.sample 
+ - Them we move on the Appwriter
+ - We wrote all our own code for appwrite in one  folder and fronend do not know about anything. From this if we want change our code in the future we just need to changge to code in this one directory  of  the auth only
+ - we can also copy paste the code if we want to write our code in the appwrite backend and add some methods as wll inside the auth
+ -->
+
+<!-- by doing npm i and then all -->
+<!-- dependencies we gonna use in this lecutre
+ - @reduxjs/toolkit     // for reduxtoolkit
+ - react-redux         // for redux
+ - react-router dom      //  for router
+ -               // for appwrite
+ - @tinymce/tinymce-react  // for tinyMCE
+ - html-react-parser       // for parser
+ - react-hook-form        // for from
+ - Tailwind
+ - npm install -g react-devtools
+ -->
+
+ <!-- Best debudding practices -->
+<!-- Step 1. Make sure you imported right file as right place and you did not forget to inmport anything anywhere We can check on going to webpage ki which error we are facing -->
+<!--Step 2.  -->
+
+<!-- learn about cors error -->
+<!-- Whenever this error will apear it's means that there is an error in the backend -->
