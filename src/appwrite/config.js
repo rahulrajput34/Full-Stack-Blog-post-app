@@ -14,10 +14,10 @@ export class Service{
         this.bucket = new Storage(this.client);
     }
 
-    async createPost({title, slug, content, featuredImage, status, userId}){
+    async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
             return await this.databases.createDocument(
-                conf.appwriteDatabaceId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
                 {
@@ -27,16 +27,18 @@ export class Service{
                     status,
                     userID: userId,
                 }
-            )
+            );
         } catch (error) {
-            console.log("Appwrite serive :: createPost :: error", error);
+            console.error("Appwrite service :: createPost :: error", error);
+            throw new Error("Failed to create post");
         }
     }
+    
 
     async updatePost(slug, {title, content, featuredImage, status}){
         try {
             return await this.databases.updateDocument(
-                conf.appwriteDatabaceId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
                 {
@@ -55,7 +57,7 @@ export class Service{
     async deletePost(slug){
         try {
             await this.databases.deleteDocument(
-                conf.appwriteDatabaceId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
             
@@ -70,7 +72,7 @@ export class Service{
     async getPost(slug){
         try {
             return await this.databases.getDocument(
-                conf.appwriteDatabaceId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
             
@@ -84,7 +86,7 @@ export class Service{
     async getPosts(queries = [Query.equal("status", "active")]){
         try {
             return await this.databases.listDocuments(
-                conf.appwriteDatabaceId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries,
                 
