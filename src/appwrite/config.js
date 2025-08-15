@@ -137,18 +137,25 @@ export class Service {
    * @returns {Promise<import("appwrite").Models.DocumentList<import("appwrite").Models.Document>|false>}
    * Document list on success, false on error.
    */
-  async getPosts(queries = [Query.equal("status", "active")]) {
-    try {
-      return await this.databases.listDocuments(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionId,
-        queries
-      );
-    } catch (error) {
-      console.log("Appwrite serive :: getPosts :: error", error);
-      return false;
-    }
+  // In your Service class
+async getPosts(queries) {
+  try {
+    const finalQueries =
+      Array.isArray(queries) && queries.length > 0
+        ? queries
+        : [Query.equal("status", "active")];
+
+    return await this.databases.listDocuments(
+      conf.appwriteDatabaseId,
+      conf.appwriteCollectionId,
+      finalQueries
+    );
+  } catch (error) {
+    console.log("Appwrite service :: getPosts :: error", error);
+    return false;
   }
+}
+
 
   // ------------------------------
   // File upload / management
