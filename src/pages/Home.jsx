@@ -56,14 +56,6 @@ function Home() {
                 : "No posts found."}
             </p>
           </div>
-          {!loading && posts.length > 0 && (
-            <Link
-              to="/add-post"
-              className="inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-            >
-              + Add Post
-            </Link>
-          )}
         </div>
 
         {/* Error banner */}
