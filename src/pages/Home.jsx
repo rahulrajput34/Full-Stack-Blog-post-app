@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Account } from "appwrite";
 import { Link } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
@@ -7,25 +8,39 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-    (async () => {
+    let mounted = true;
+    const run = async () => {
       try {
         setLoading(true);
         setLoadError("");
         const res = await appwriteService.getPosts();
-        if (isMounted && res?.documents) {
-          setPosts(res.documents);
-        }
+        if (mounted && res?.documents) setPosts(res.documents);
       } catch (err) {
-        if (isMounted) setLoadError(err?.message || "Failed to load posts.");
+        if (mounted) setLoadError(err?.message || "Failed to load posts.");
       } finally {
-        if (isMounted) setLoading(false);
+        if (mounted) setLoading(false);
       }
-    })();
+    };
+    run();
     return () => {
-      isMounted = false;
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    const account = new Account(appwriteService.client);
+    account
+      .get()
+      .then(() => mounted && setIsAuthed(true))
+      .catch(() => mounted && setIsAuthed(false))
+      .finally(() => mounted && setAuthChecked(true));
+    return () => {
+      mounted = false;
     };
   }, []);
 
@@ -40,7 +55,6 @@ function Home() {
   return (
     <section className="w-full bg-gradient-to-b from-white to-slate-50 py-10">
       <Container>
-        {/* Header */}
         <div className="mb-8 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
@@ -58,7 +72,6 @@ function Home() {
           </div>
         </div>
 
-        {/* Error banner */}
         {loadError && (
           <div
             role="alert"
@@ -68,7 +81,6 @@ function Home() {
           </div>
         )}
 
-        {/* Loading state */}
         {loading && (
           <div
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -80,34 +92,54 @@ function Home() {
           </div>
         )}
 
-        {/* Empty state */}
-        {!loading && posts.length === 0 && !loadError && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
-            <div className="mb-3 text-3xl">📰</div>
-            <h2 className="text-lg font-medium text-slate-900">
-              Login to read posts
-            </h2>
-            <p className="mt-1 max-w-md text-sm text-slate-600">
-              Sign in to access the latest articles and community updates.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                to="/login"
-                className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-              >
-                Log In
-              </Link>
-              <Link
-                to="/signup"
-                className="inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-              >
-                Create Account
-              </Link>
-            </div>
-          </div>
+        {!loading && posts.length === 0 && !loadError && authChecked && (
+          <>
+            {isAuthed ? (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+                <div className="mb-3 text-3xl">✍️</div>
+                <h2 className="text-lg font-medium text-slate-900">
+                  Create your first post
+                </h2>
+                <p className="mt-1 max-w-md text-sm text-slate-600">
+                  You’re signed in. Start sharing updates with the community.
+                </p>
+                <div className="mt-6">
+                  <Link
+                    to="/add-post"
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  >
+                    Add Post
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+                <div className="mb-3 text-3xl">📰</div>
+                <h2 className="text-lg font-medium text-slate-900">
+                  Log in to add a post
+                </h2>
+                <p className="mt-1 max-w-md text-sm text-slate-600">
+                  Sign in to create posts and see community updates.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
-        {/* Posts grid */}
         {!loading && posts.length > 0 && (
           <ul
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
