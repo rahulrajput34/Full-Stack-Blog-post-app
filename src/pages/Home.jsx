@@ -53,7 +53,7 @@ function Home() {
   );
 
   return (
-    <section className="w-full bg-gradient-to-b from-white to-slate-50 py-10">
+    <section className="w-full bg-white py-10">
       <Container>
         <div className="mb-8 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
           <div>
