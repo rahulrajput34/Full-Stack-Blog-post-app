@@ -41,7 +41,7 @@ function AllPosts() {
   );
 
   return (
-    <section className="w-full bg-gradient-to-b from-white to-slate-50 py-10">
+    <section className="w-full bg-white py-10">
       <Container>
         {/* Header */}
         <div className="mb-8">
