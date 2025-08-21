@@ -93,11 +93,8 @@ export default function Button({
 }
 
 Button.propTypes = {
-  /** Button label or custom content */
   children: PropTypes.node,
-  /** Native button type */
   type: PropTypes.oneOf(["button", "submit", "reset"]),
-  /** Visual style preset */
   variant: PropTypes.oneOf([
     "primary",
     "secondary",
@@ -105,20 +102,12 @@ Button.propTypes = {
     "ghost",
     "destructive",
   ]),
-  /** Size preset */
   size: PropTypes.oneOf(["sm", "md", "lg"]),
-  /** Shows spinner and disables the button */
   isLoading: PropTypes.bool,
-  /** Optional icon element displayed before the label */
   leadingIcon: PropTypes.node,
-  /** Optional icon element displayed after the label */
   trailingIcon: PropTypes.node,
-  /** Make the button full-width */
   block: PropTypes.bool,
-  /** Tailwind class to override background color */
   bgColor: PropTypes.string,
-  /** Tailwind class to override text color */
   textColor: PropTypes.string,
-  /** Additional class names */
   className: PropTypes.string,
 };
