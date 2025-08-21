@@ -13,7 +13,7 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-slate-200 bg-gradient-to-b from-white to-slate-50 text-slate-800">
+    <footer className="relative overflow-hidden bg-white text-slate-800">
       {/* Decorative soft tint (non-interactive) */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -top-24 left-1/2 h-56 w-[36rem] -translate-x-1/2 rounded-full blur-3xl" />
