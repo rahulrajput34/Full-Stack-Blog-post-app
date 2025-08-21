@@ -6,6 +6,7 @@ import ConfirmDialog from "../Radix/ConfirmDialog";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/authSlice";
 import authService from "../../appwrite/auth";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -157,9 +158,14 @@ function Header() {
                 >
                   <button
                     type="button"
-                    className="inline-flex items-center rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                    className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                   >
-                    Logout
+                    {/* Logout */}
+                    <Icon
+                      icon="material-symbols:logout-rounded"
+                      width="24"
+                      height="24"
+                    />
                   </button>
                 </ConfirmDialog>
               </li>
@@ -218,9 +224,14 @@ function Header() {
                 >
                   <button
                     type="button"
-                    className="block w-full rounded-md border border-slate-200 px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                    className="block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                   >
-                    Logout
+                    {/* Logout */}
+                    <Icon
+                      icon="material-symbols:logout-rounded"
+                      width="24"
+                      height="24"
+                    />
                   </button>
                 </ConfirmDialog>
               </li>
