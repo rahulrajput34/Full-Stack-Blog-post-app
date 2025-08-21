@@ -2,12 +2,17 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Container, Logo, LogoutBtn } from "../index";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ConfirmDialog from "../Radix/ConfirmDialog";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/authSlice";
+import authService from "../../appwrite/auth";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const navItems = [
     { name: "Home", slug: "/", active: true },
@@ -22,12 +27,12 @@ function Header() {
     [pathname]
   );
 
-  // Close mobile menu when route changes
+  // Close mobile menu on route change
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // Close on Escape
+  // Close mobile menu on Escape
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") setOpen(false);
@@ -35,6 +40,13 @@ function Header() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  const logoutHandler = () => {
+    authService.logout().then(() => {
+      dispatch(logout());
+      navigate("/login");
+    });
+  };
 
   // Link styles
   const baseLink =
@@ -135,7 +147,21 @@ function Header() {
               })}
             {authStatus && (
               <li className="ml-1">
-                <LogoutBtn />
+                <ConfirmDialog
+                  title="Log out of your account?"
+                  description="You’ll be signed out on this device."
+                  confirmLabel="Yes, log out"
+                  cancelLabel="Cancel"
+                  variant="destructive"
+                  onConfirm={logoutHandler}
+                >
+                  <button
+                    type="button"
+                    className="inline-flex items-center rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  >
+                    Logout
+                  </button>
+                </ConfirmDialog>
               </li>
             )}
           </ul>
@@ -182,7 +208,21 @@ function Header() {
               })}
             {authStatus && (
               <li className="pt-1">
-                <LogoutBtn />
+                <ConfirmDialog
+                  title="Log out of your account?"
+                  description="You’ll be signed out on this device."
+                  confirmLabel="Yes, log out"
+                  cancelLabel="Cancel"
+                  variant="destructive"
+                  onConfirm={logoutHandler}
+                >
+                  <button
+                    type="button"
+                    className="block w-full rounded-md border border-slate-200 px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  >
+                    Logout
+                  </button>
+                </ConfirmDialog>
               </li>
             )}
           </ul>
