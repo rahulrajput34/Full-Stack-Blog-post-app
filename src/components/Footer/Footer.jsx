@@ -16,7 +16,7 @@ function Footer() {
     <footer className="relative overflow-hidden border-t border-slate-200 bg-gradient-to-b from-white to-slate-50 text-slate-800">
       {/* Decorative soft tint (non-interactive) */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-24 left-1/2 h-56 w-[36rem] -translate-x-1/2 rounded-full bg-indigo-200/30 blur-3xl" />
+        <div className="absolute -top-24 left-1/2 h-56 w-[36rem] -translate-x-1/2 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
