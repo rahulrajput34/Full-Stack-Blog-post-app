@@ -141,7 +141,9 @@ export default function Post() {
         setCopied(true);
         setTimeout(() => setCopied(false), 1800);
       }
-    } catch {}
+    } catch {
+      alert("Failed to share.");
+    }
   };
 
   // Loading state (sleek skeleton)
