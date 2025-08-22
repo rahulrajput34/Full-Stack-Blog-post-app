@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
-import { Button, Input, Logo } from "./index";
+import { Input, Logo } from "./index";
 import { useDispatch } from "react-redux";
 import authService from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 
 /**
  * Login
- * -----
  * - Uses react-hook-form for validation and submission state
  * - Calls Appwrite authService.login -> getCurrentUser
  * - Dispatches authLogin(user) on success, then navigates home
- * - Accessible: focus rings, ARIA for errors, semantic copy
+ * - Accessible; uses a plain <button> for submit
  */
 function Login() {
   const navigate = useNavigate();
@@ -35,19 +34,21 @@ function Login() {
       const session = await authService.login(data);
       if (session) {
         const user = await authService.getCurrentUser();
-        if (user) {
-          dispatch(authLogin(user));
-        }
+        if (user) dispatch(authLogin(user));
         navigate("/");
       }
     } catch (err) {
-      // Show a friendly message; keep raw message when available
       setFormError(
         err?.message ||
           "Unable to log in. Please check your credentials and try again."
       );
     }
   };
+
+  const btnBase =
+    "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
+  const btnPrimary = "w-full bg-indigo-600 text-white hover:bg-indigo-700";
 
   return (
     <div className="flex min-h-[70vh] w-full items-center justify-center px-4 py-10">
@@ -67,7 +68,7 @@ function Login() {
           Don&apos;t have an account?{" "}
           <Link
             to="/signup"
-            className="font-medium text-indigo-600 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-sm"
+            className="rounded-sm font-medium text-indigo-600 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             Sign up
           </Link>
@@ -102,7 +103,6 @@ function Login() {
               {...register("email", {
                 required: "Email is required",
                 pattern: {
-                  // HTML5 email type helps, but keep a sane pattern as well
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
                   message: "Enter a valid email address",
                 },
@@ -139,10 +139,10 @@ function Login() {
             )}
           </div>
 
-          {/* Submit */}
-          <Button
+          {/* Submit (plain button) */}
+          <button
             type="submit"
-            className="w-full"
+            className={`${btnBase} ${btnPrimary}`}
             disabled={isSubmitting}
             aria-busy={isSubmitting ? "true" : "false"}
           >
@@ -173,7 +173,7 @@ function Login() {
             ) : (
               "Log In"
             )}
-          </Button>
+          </button>
         </form>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Input, RTE, Select } from "..";
+import { Input, RTE, Select } from ".."; 
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -156,6 +156,14 @@ export default function PostForm({ post }) {
     }
   };
 
+  // ---- Plain button styles ----
+  const btnBase =
+    "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
+  const btnPrimary = "bg-indigo-600 text-white hover:bg-indigo-700";
+  const btnSecondary =
+    "bg-white text-slate-800 border border-slate-200 hover:bg-slate-100";
+
   // -------- UI --------
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -171,7 +179,7 @@ export default function PostForm({ post }) {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left: Title/Slug/Editor */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="space-y-4 lg:col-span-2">
           <Input
             label="Title"
             placeholder="Post title"
@@ -288,24 +296,53 @@ export default function PostForm({ post }) {
           )}
 
           <div className="flex gap-3">
-            <Button
+            {/* Submit (plain button) */}
+            <button
               type="submit"
-              className="flex-1"
-              isLoading={isSubmitting}
+              className={`${btnBase} ${btnPrimary} flex-1`}
               disabled={isSubmitting}
+              aria-busy={isSubmitting ? "true" : "false"}
             >
-              {post ? "Update" : "Submit"}
-            </Button>
+              {isSubmitting ? (
+                <span className="inline-flex items-center gap-2">
+                  <svg
+                    className="h-4 w-4 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
+                  </svg>
+                  {post ? "Updating…" : "Submitting…"}
+                </span>
+              ) : post ? (
+                "Update"
+              ) : (
+                "Submit"
+              )}
+            </button>
 
-            <Button
+            {/* Cancel (plain button) */}
+            <button
               type="button"
-              variant="secondary"
-              className="flex-1"
               onClick={() => navigate(-1)}
+              className={`${btnBase} ${btnSecondary} flex-1`}
               disabled={isSubmitting}
             >
               Cancel
-            </Button>
+            </button>
           </div>
         </div>
       </div>

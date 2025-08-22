@@ -2,16 +2,14 @@ import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { login as loginAction } from "../store/authSlice";
-import { Button, Input, Logo } from "./index.js";
+import { Input, Logo } from "./index.js";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 /**
- * Signup
- * - Creates account via authService.createAccount (auto-login expected)
- * - Fetches current user, dispatches to Redux, then navigates home
- * - React Hook Form validation + accessible error messaging
- * - Polished, professional light UI
+ * Signup (uses plain <button>)
+ * - createAccount -> getCurrentUser -> Redux -> navigate("/")
+ * - react-hook-form validation + accessible errors
  */
 function Signup() {
   const navigate = useNavigate();
@@ -31,13 +29,10 @@ function Signup() {
   const onSubmit = async (data) => {
     setFormError("");
     try {
-      // Expecting createAccount to return a Session (auto-login), per your AuthService rewrite
       const session = await authService.createAccount(data);
       if (session) {
         const user = await authService.getCurrentUser();
-        if (user) {
-          dispatch(loginAction(user));
-        }
+        if (user) dispatch(loginAction(user));
         navigate("/");
       }
     } catch (err) {
@@ -46,6 +41,12 @@ function Signup() {
       );
     }
   };
+
+  // Plain button styles
+  const btnBase =
+    "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
+  const btnPrimary = "w-full bg-indigo-600 text-white hover:bg-indigo-700";
 
   return (
     <div className="flex min-h-[70vh] w-full items-center justify-center px-4 py-10">
@@ -159,10 +160,10 @@ function Signup() {
             )}
           </div>
 
-          {/* Submit */}
-          <Button
+          {/* Submit (plain button) */}
+          <button
             type="submit"
-            className="w-full"
+            className={`${btnBase} ${btnPrimary}`}
             disabled={isSubmitting}
             aria-busy={isSubmitting ? "true" : "false"}
           >
@@ -193,7 +194,7 @@ function Signup() {
             ) : (
               "Create Account"
             )}
-          </Button>
+          </button>
         </form>
       </div>
     </div>
