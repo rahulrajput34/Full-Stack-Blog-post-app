@@ -3,6 +3,7 @@ import { Account } from "appwrite";
 import { Link } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -93,51 +94,89 @@ function Home() {
         )}
 
         {!loading && posts.length === 0 && !loadError && authChecked && (
-          <>
+          <section className="w-full" aria-live="polite" role="status">
             {isAuthed ? (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
-                <div className="mb-3 text-3xl">✍️</div>
-                <h2 className="text-lg font-medium text-slate-900">
-                  Create your first post
-                </h2>
-                <p className="mt-1 max-w-md text-sm text-slate-600">
-                  You’re signed in. Start sharing updates with the community.
-                </p>
-                <div className="mt-6">
-                  <Link
-                    to="/add-post"
-                    className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                  >
-                    Add Post
-                  </Link>
+              /* ----- Signed-in state ----- */
+              <div className="w-full rounded-2xl border border-slate-200 bg-white py-12">
+                <div className="mx-auto flex max-w-xl flex-col items-center px-4 text-center">
+                  <div className="mb-4 grid h-14 w-14 place-items-center rounded-full bg-indigo-50 ring-1 ring-indigo-100">
+                    <Icon
+                      icon="mdi:pencil-plus-outline"
+                      className="h-7 w-7 text-indigo-600"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  <h2 className="text-lg font-semibold text-slate-900">
+                    Create your first blog
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-600">
+                    You’re signed in. Share your ideas and updates with the
+                    community.
+                  </p>
+
+                  <div className="mt-6">
+                    <Link
+                      to="/add-post"
+                      className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                    >
+                      <Icon
+                        icon="mdi:plus"
+                        className="mr-1.5 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      Add Post
+                    </Link>
+                  </div>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
-                <div className="mb-3 text-3xl">📰</div>
-                <h2 className="text-lg font-medium text-slate-900">
-                  Log in to add a post
-                </h2>
-                <p className="mt-1 max-w-md text-sm text-slate-600">
-                  Sign in to create posts and see community updates.
-                </p>
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                  <Link
-                    to="/login"
-                    className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                  >
-                    Log In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                  >
-                    Create Account
-                  </Link>
+              /* ----- Logged-out state ----- */
+              <div className="w-full rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 py-12 shadow-sm">
+                <div className="mx-auto flex max-w-xl flex-col items-center px-4 text-center">
+                  <div className="mb-4 grid h-14 w-14 place-items-center rounded-full bg-slate-100 ring-1 ring-slate-200">
+                    <Icon
+                      icon="mdi:newspaper-variant-outline"
+                      className="h-7 w-7 text-slate-700"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  <h2 className="text-lg font-semibold text-slate-900">
+                    Log in to add a post
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Sign in to create posts and see community updates.
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                    <Link
+                      to="/login"
+                      className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                    >
+                      <Icon
+                        icon="mdi:login"
+                        className="mr-1.5 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      Log In
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                    >
+                      <Icon
+                        icon="mdi:account-plus-outline"
+                        className="mr-1.5 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      Create Account
+                    </Link>
+                  </div>
                 </div>
               </div>
             )}
-          </>
+          </section>
         )}
 
         {!loading && posts.length > 0 && (
