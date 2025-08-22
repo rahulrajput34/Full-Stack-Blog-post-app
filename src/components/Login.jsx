@@ -8,10 +8,11 @@ import { useForm } from "react-hook-form";
 
 /**
  * Login
- * - Uses react-hook-form for validation and submission state
- * - Calls Appwrite authService.login -> getCurrentUser
- * - Dispatches authLogin(user) on success, then navigates home
- * - Accessible; uses a plain <button> for submit
+ * - Validates with react-hook-form and shows inline errors
+ * - Authenticates via Appwrite (authService.login -> getCurrentUser)
+ * - Dispatches authLogin(user) and navigates home on success
+ * - Accessible form semantics and focus rings
+ * @return {JSX.Element}
  */
 function Login() {
   const navigate = useNavigate();
@@ -28,6 +29,11 @@ function Login() {
 
   const [formError, setFormError] = useState("");
 
+  /**
+   * Handle login submit
+   * @param {{email: string, password: string}} data
+   * @return {Promise<void>}
+   */
   const onSubmit = async (data) => {
     setFormError("");
     try {
@@ -45,6 +51,7 @@ function Login() {
     }
   };
 
+  // Button styles
   const btnBase =
     "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -53,11 +60,15 @@ function Login() {
   return (
     <div className="flex min-h-[70vh] w-full items-center justify-center px-4 py-10">
       <div className="mx-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white/90 p-8 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        {/* Brand */}
-        <div className="mb-6 flex justify-center">
-          <span className="inline-block w-full max-w-[110px]">
-            <Logo width="100%" />
-          </span>
+        {/* Brand (perfectly centered) */}
+        <div className="mb-6 grid place-items-center">
+          <Link
+            to="/"
+            aria-label="Home"
+            className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+          >
+            <Logo width="120px" />
+          </Link>
         </div>
 
         {/* Heading */}
@@ -79,7 +90,7 @@ function Login() {
           <div
             className="mt-6 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
             role="alert"
-            aria-live="polite"
+            aria-live="assertive"
           >
             {formError}
           </div>
@@ -94,6 +105,7 @@ function Login() {
           {/* Email */}
           <div>
             <Input
+              id="email"
               label="Email"
               type="email"
               placeholder="you@example.com"
@@ -118,6 +130,7 @@ function Login() {
           {/* Password */}
           <div>
             <Input
+              id="password"
               label="Password"
               type="password"
               placeholder="Your password"
@@ -139,7 +152,7 @@ function Login() {
             )}
           </div>
 
-          {/* Submit (plain button) */}
+          {/* Submit */}
           <button
             type="submit"
             className={`${btnBase} ${btnPrimary}`}
