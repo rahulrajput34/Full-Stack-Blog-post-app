@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, PostCard } from "../components";
 import appwriteService from "../appwrite/config";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
@@ -83,17 +84,27 @@ function AllPosts() {
 
         {/* Empty state */}
         {!loading && posts.length === 0 && !loadError && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
-            <div className="mb-3 text-3xl">📰</div>
-            <h2 className="text-lg font-medium text-slate-900">
-              Nothing here yet
-            </h2>
-            <p className="mt-1 max-w-md text-sm text-slate-600">
-              Check back soon for fresh content.
-            </p>
-          </div>
-        )}
+          <section className="w-full" aria-live="polite" role="status">
+            <div className="w-full rounded-2xl border border-indigo-100 bg-white py-12">
+              <div className="mx-auto flex max-w-xl flex-col items-center px-4 text-center">
+                <div className="mb-4 grid h-14 w-14 place-items-center rounded-full bg-indigo-50 ring-1 ring-indigo-100">
+                  <Icon
+                    icon="mdi:newspaper-variant-outline"
+                    className="h-7 w-7 text-indigo-600"
+                    aria-hidden="true"
+                  />
+                </div>
 
+                <h2 className="text-lg font-semibold text-slate-900">
+                  Nothing here yet
+                </h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  Check back soon for fresh content.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
         {/* Posts grid */}
         {!loading && posts.length > 0 && (
           <ul
