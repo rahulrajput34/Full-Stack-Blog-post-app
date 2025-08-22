@@ -7,9 +7,11 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 /**
- * Signup (uses plain <button>)
- * - createAccount -> getCurrentUser -> Redux -> navigate("/")
- * - react-hook-form validation + accessible errors
+ * Signup
+ * - Validates with react-hook-form and shows inline errors
+ * - Appwrite: createAccount -> getCurrentUser -> Redux -> navigate("/")
+ * - Accessible: focus rings, aria-live region, labeled inputs
+ * @return {JSX.Element}
  */
 function Signup() {
   const navigate = useNavigate();
@@ -26,6 +28,11 @@ function Signup() {
 
   const [formError, setFormError] = useState("");
 
+  /**
+   * Handle signup submit
+   * @param {{name:string,email:string,password:string}} data
+   * @return {Promise<void>}
+   */
   const onSubmit = async (data) => {
     setFormError("");
     try {
@@ -42,7 +49,7 @@ function Signup() {
     }
   };
 
-  // Plain button styles
+  // Button styles
   const btnBase =
     "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -51,11 +58,16 @@ function Signup() {
   return (
     <div className="flex min-h-[70vh] w-full items-center justify-center px-4 py-10">
       <div className="mx-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white/90 p-8 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        {/* Brand */}
-        <div className="mb-6 flex justify-center">
-          <span className="inline-block w-full max-w-[110px]">
-            <Logo width="100%" />
-          </span>
+        <div className="mb-6 grid place-items-center">
+          <Link
+            to="/"
+            aria-label="Home"
+            className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+          >
+            <div className="inline-flex items-center justify-center rounded-xl bg-white px-4 py-3 shadow-sm">
+              <Logo width="120px" />
+            </div>
+          </Link>
         </div>
 
         {/* Heading */}
@@ -77,7 +89,7 @@ function Signup() {
           <div
             className="mt-6 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
             role="alert"
-            aria-live="polite"
+            aria-live="assertive"
           >
             {formError}
           </div>
@@ -92,6 +104,7 @@ function Signup() {
           {/* Full Name */}
           <div>
             <Input
+              id="name"
               label="Full Name"
               placeholder="Your full name"
               autoComplete="name"
@@ -115,6 +128,7 @@ function Signup() {
           {/* Email */}
           <div>
             <Input
+              id="email"
               label="Email"
               type="email"
               placeholder="you@example.com"
@@ -139,6 +153,7 @@ function Signup() {
           {/* Password */}
           <div>
             <Input
+              id="password"
               label="Password"
               type="password"
               placeholder="Create a password"
@@ -160,7 +175,7 @@ function Signup() {
             )}
           </div>
 
-          {/* Submit (plain button) */}
+          {/* Submit */}
           <button
             type="submit"
             className={`${btnBase} ${btnPrimary}`}
