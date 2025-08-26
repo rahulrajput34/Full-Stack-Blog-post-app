@@ -218,7 +218,7 @@ export default function Post() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/35 to-transparent" />
 
         {/* Top bar (Back + Share) */}
-        <div className="relative z-10">
+        <div className="relative">
           <Container>
             <div className="flex items-center justify-between pt-4">
               <div className="flex items-center gap-2">
@@ -297,7 +297,7 @@ export default function Post() {
 
       {/* CONTENT CARD (overlapping) */}
       <Container>
-        <article className="relative z-10 mx-auto -mt-16 max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <article className="relative mx-auto -mt-16 max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           {/* Author tools */}
           {isAuthor && (
             <div className="flex items-center justify-end gap-2 border-b border-slate-200 bg-slate-50/60 px-4 py-3">
