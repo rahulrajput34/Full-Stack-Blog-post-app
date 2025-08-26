@@ -5,6 +5,7 @@ import parse from "html-react-parser";
 import { Icon } from "@iconify/react";
 import appwriteService from "../appwrite/config";
 import { Container } from "../components";
+import ConfirmDialog from "../components/Radix/ConfirmDialog";
 
 /**
  * Post (full redesign, using plain <button>)
@@ -117,13 +118,15 @@ export default function Post() {
   // Actions
   const handleDelete = async () => {
     if (!post) return;
-    if (!window.confirm("Delete this post?")) return;
     try {
       const ok = await appwriteService.deletePost(post.$id);
       if (ok && post.featuredImage) {
         try {
           await appwriteService.deleteFile(post.featuredImage);
-        } catch {}
+        } catch {
+          // non-blocking cleanup error
+          alert("Failed to delete image.");
+        }
       }
       navigate("/");
     } catch (e) {
@@ -309,14 +312,26 @@ export default function Post() {
                 <Icon icon="mdi:pencil-outline" className="mr-1.5 h-5 w-5" />
                 Edit
               </Link>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className={`${btnBase} ${btnDangerOutline}`}
+              {/*WITH THIS ConfirmDialog wrapper */}
+              <ConfirmDialog
+                title="Delete this post?"
+                description="This will permanently remove the post. This action cannot be undone."
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+                variant="destructive"
+                onConfirm={handleDelete}
               >
-                <Icon icon="mdi:trash-can-outline" className="mr-1.5 h-5 w-5" />
-                Delete
-              </button>
+                <button
+                  type="button"
+                  className={`${btnBase} ${btnDangerOutline}`}
+                >
+                  <Icon
+                    icon="mdi:trash-can-outline"
+                    className="mr-1.5 h-5 w-5"
+                  />
+                  Delete
+                </button>
+              </ConfirmDialog>
             </div>
           )}
 
