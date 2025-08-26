@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input, RTE, Select } from ".."; 
+import { Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -32,7 +32,7 @@ export default function PostForm({ post }) {
 
   const [formError, setFormError] = useState("");
 
-  // -------- Slug helpers --------
+  //  Slug helpers
   const slugTransform = useCallback((value) => {
     if (!value || typeof value !== "string") return "";
     return value
@@ -54,7 +54,7 @@ export default function PostForm({ post }) {
     return () => sub.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
-  // -------- Image preview --------
+  //  Image preview
   const imageFiles = watch("image"); // FileList from <input type="file" />
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -69,7 +69,7 @@ export default function PostForm({ post }) {
 
   const statusOptions = useMemo(() => ["active", "inactive"], []);
 
-  // -------- Submit handler --------
+  //  Submit handler
   const onSubmit = async (data) => {
     setFormError("");
     try {
@@ -156,7 +156,7 @@ export default function PostForm({ post }) {
     }
   };
 
-  // ---- Plain button styles ----
+  // Plain button styles
   const btnBase =
     "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -164,7 +164,7 @@ export default function PostForm({ post }) {
   const btnSecondary =
     "bg-white text-slate-800 border border-slate-200 hover:bg-slate-100";
 
-  // -------- UI --------
+  //  UI
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       {/* Banner error */}
