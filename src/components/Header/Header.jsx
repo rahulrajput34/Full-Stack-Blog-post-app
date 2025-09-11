@@ -57,7 +57,7 @@ function Header() {
     "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400";
 
   return (
-    <header className="sticky top-0">
+    <header>
       <Container>
         <nav
           className="flex items-center justify-between py-3"
